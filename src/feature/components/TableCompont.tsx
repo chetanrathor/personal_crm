@@ -1,68 +1,64 @@
-import { Table, TableHead, TableRow, TableCell, TableBody } from '@mui/material';
+import { Table, TableHead, TableRow, TableCell, TableBody, Checkbox, Button } from '@mui/material';
 import React from 'react'
-
+import { HumanResource } from '../types'
+import DoneAllIcon from '@mui/icons-material/DoneAll'
+import CloseIcon from '@mui/icons-material/Close';
+import { useDispatch, useSelector } from 'react-redux';
+import { setIsNewEmail, showModal } from '../crm/state/modal-slice';
+import { RootState } from '../../store/store';
 const TableCompont = () => {
-    function createData(
-        name: string,
-        calories: number,
-        fat: number,
-        carbs: number,
-        protein: number,
-      ) {
-        return { name, calories, fat, carbs, protein };
-      }
-      
-      const rows = [
-        createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-        createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-        createData('Eclair', 262, 16.0, 24, 6.0),
-        createData('Cupcake', 305, 3.7, 67, 4.3),
-        createData('Cupcake', 305, 3.7, 67, 4.3),
-        createData('Cupcake', 305, 3.7, 67, 4.3),
-        createData('Cupcake', 305, 3.7, 67, 4.3),
-        createData('Cupcake', 305, 3.7, 67, 4.3),
-        createData('Cupcake', 305, 3.7, 67, 4.3),
-        createData('Cupcake', 305, 3.7, 67, 4.3),
-        createData('Cupcake', 305, 3.7, 67, 4.3),
-        createData('Cupcake', 305, 3.7, 67, 4.3),
-        createData('Cupcake', 305, 3.7, 67, 4.3),
-        createData('Cupcake', 305, 3.7, 67, 4.3),
-        createData('Cupcake', 305, 3.7, 67, 4.3),
-        createData('Cupcake', 305, 3.7, 67, 4.3),
-        createData('Cupcake', 305, 3.7, 67, 4.3),
-        createData('Cupcake', 305, 3.7, 67, 4.3),
-        createData('Gingerbread', 356, 16.0, 49, 3.9),
-      ];
-    
-  return (
-    <Table sx={{ minWidth: 650 }} aria-label="simple table">
-    <TableHead sx={{backgroundColor:'GrayText'}}>
-        <TableRow>
-            <TableCell>Dessert (100g serving)</TableCell>
-            <TableCell align="right">Calories</TableCell>
-            <TableCell align="right">Fat&nbsp;(g)</TableCell>
-            <TableCell align="right">Carbs&nbsp;(g)</TableCell>
-            <TableCell align="right">Protein&nbsp;(g)</TableCell>
-        </TableRow>
-    </TableHead>
-    <TableBody sx={{maxHeight:'80%'}}>
-        {rows.map((row) => (
-            <TableRow
-                key={row.name}
-                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-            >
-                <TableCell component="th" scope="row">
-                    {row.name}
-                </TableCell>
-                <TableCell align="right">{row.calories}</TableCell>
-                <TableCell align="right">{row.fat}</TableCell>
-                <TableCell align="right">{row.carbs}</TableCell>
-                <TableCell align="right">{row.protein}</TableCell>
-            </TableRow>
-        ))}
-    </TableBody>
-</Table>
-  )
+
+    const rows = useSelector((state: RootState) => state.crmReducer.humanResources)
+    const dispatch = useDispatch()
+    const handelSendEmailClick = (item: HumanResource) => {
+        localStorage.setItem('humanResource', JSON.stringify(item))
+        dispatch(showModal())
+        dispatch(setIsNewEmail(true))
+    }
+    const handelFollowUpClick = (item: HumanResource) => {
+        localStorage.setItem('humanResource', JSON.stringify(item))
+        dispatch(showModal())
+        dispatch(setIsNewEmail(false))
+
+    }
+
+    return (
+        <Table sx={{ minWidth: 650 }} aria-label="simple table">
+            <TableHead sx={{ backgroundColor: 'GrayText' }}>
+                <TableRow>
+                    <TableCell>Name</TableCell>
+                    <TableCell >Email</TableCell>
+                    <TableCell >Is Email Sent Ever ? </TableCell>
+                    <TableCell >Send E-Mail </TableCell>
+
+                </TableRow>
+            </TableHead>
+            <TableBody sx={{ maxHeight: '80%' }}>
+                {rows.map((row) => (
+                    <TableRow
+                        key={row.name}
+                        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                    >
+                        <TableCell component="th" scope="row">
+                            {row.name}
+                        </TableCell>
+                        <TableCell component="th" scope="row">
+                            {row.email}
+                        </TableCell>
+                        <TableCell component="th" scope="row">
+                            {
+                                row.personalizeEmails.length ? <DoneAllIcon color='success'></DoneAllIcon> : <CloseIcon color='error'></CloseIcon>
+                            }
+                        </TableCell>
+                        <TableCell>
+                            {row.personalizeEmails.length === 0 ? <Button variant='contained' color='primary' onClick={() => { handelSendEmailClick(row) }} >Send Email</Button> : <Button variant='contained' color='warning' onClick={() => { handelFollowUpClick(row) }}>Follow Up</Button>}
+                        </TableCell>
+
+                    </TableRow>
+                ))}
+            </TableBody>
+        </Table>
+    )
 }
 
 export default TableCompont

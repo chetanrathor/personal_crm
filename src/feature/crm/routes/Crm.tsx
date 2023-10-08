@@ -1,8 +1,43 @@
 import { Alert, Button, FormLabel, Grid, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField } from '@mui/material'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import TableCompont from '../../components/TableCompont'
+import copy from "copy-to-clipboard";
+import { useDispatch, useSelector } from 'react-redux';
+import { addNewHumanResource, fetchAllHumanResources } from '../state/crm-slice';
+import { RootState } from '../../../store/store';
+import { hideAlert } from '../state/alert-slice';
 
 const Crm = () => {
+    const [email, setEmail] = useState('')
+    const { alertReducer, crmReducer } = useSelector((state: RootState) => state)
+    const { isVisble, message } = alertReducer
+    const { humanResources } = crmReducer
+    const dispatch = useDispatch()
+    const handelAddHRClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+        e.preventDefault();
+        dispatch(addNewHumanResource({ email, name: '' }) as unknown as any)
+        dispatch(fetchAllHumanResources({ limit: '0', offset: '0', search: '', order: 'DESC' }) as any)
+        setEmail('')
+    }
+
+    const handelCopyClick = () => {
+        copy(email)
+    }
+    const handelPasteClick = () => {
+        navigator.clipboard.readText().then((data) => setEmail(data))
+    }
+
+    useEffect(() => {
+        dispatch(fetchAllHumanResources({ limit: '0', offset: '0', search: '', order: 'DESC' }) as any)
+    }, [dispatch])
+
+    useEffect(() => { 
+        if(isVisble){
+            setTimeout(() => {
+               dispatch(hideAlert(false))
+            }, 2000);
+        }
+    }, [isVisble])
 
     const [showAlert, setShowAlert] = useState(false)
     return (
@@ -11,21 +46,21 @@ const Crm = () => {
             <Grid container height={'100vh'} padding={2} gap={1} justifyContent={'space-around'}>
                 <Grid item lg={4}>
                     {
-                        showAlert &&
+                        isVisble &&
 
-                        <Alert severity="error">This is a success alert — check it out! <Button>Close </Button></Alert>
+                        <Alert severity="error">{message}! <Button>Close </Button></Alert>
                     }
                     <Grid container direction={'column'} gap={2}>
                         <Grid item container direction={'column'}>
                             <FormLabel>Email</FormLabel>
-                            <TextField type='email'></TextField>
+                            <TextField type='email' value={email} onChange={(e) => { setEmail(e.target.value) }}></TextField>
                         </Grid>
 
                         <Grid item container gap={2} justifyContent={'space-between'}>
-                            <Button variant='contained'>Add An HR</Button>
+                            <Button variant='contained' onClick={(e) => { handelAddHRClick(e) }}>Add An HR</Button>
                             <Grid columnGap={2} >
-                                <Button variant='contained' color='warning'>Paste</Button>
-                                <Button variant='contained'>Copy</Button>
+                                <Button variant='contained' sx={{ marginRight: 1 }} onClick={handelPasteClick} color='warning'>Paste</Button>
+                                <Button variant='contained' onClick={handelCopyClick}>Copy</Button>
                             </Grid>
                         </Grid>
                     </Grid>
@@ -35,7 +70,6 @@ const Crm = () => {
                         <TableCompont></TableCompont>
                     </TableContainer>
                 </Grid>
-
             </Grid>
         </>
     )

@@ -1,13 +1,20 @@
 import React from 'react'
-import { Route, Routes } from 'react-router-dom'
-import Crm from './Crm'
+import { Outlet, Route, Routes } from 'react-router-dom'
+import CrmRoutes from '.'
+import Crm from '../routes/Crm'
+import { Modal } from '@mui/material'
+import { ModalComponent } from '../components/ModalComponent'
 
-const CrmRoutes = () => {
+const AppRoutes = () => {
     return (
-        <Routes>
-            <Route path='' element={<Crm></Crm>} ></Route>
-        </Routes>
+        <>
+            <ModalComponent></ModalComponent>
+            <Crm></Crm >
+        </>
+        // <Routes>
+        //     <Route path='' element={<CrmRoutes></CrmRoutes>}></Route>
+        // </Routes >
     )
 }
 
-export default CrmRoutes
+export default AppRoutes
