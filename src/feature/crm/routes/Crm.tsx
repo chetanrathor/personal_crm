@@ -1,4 +1,4 @@
-import { Alert, Button, FormLabel, Grid, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField } from '@mui/material'
+import { Alert, AlertColor, Button, FormLabel, Grid, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import TableCompont from '../../components/TableCompont'
 import copy from "copy-to-clipboard";
@@ -10,14 +10,17 @@ import { hideAlert } from '../state/alert-slice';
 const Crm = () => {
     const [email, setEmail] = useState('')
     const { alertReducer, crmReducer } = useSelector((state: RootState) => state)
-    const { isVisble, message } = alertReducer
+    const { isVisble, message, alertType } = alertReducer
     const { humanResources } = crmReducer
     const dispatch = useDispatch()
     const handelAddHRClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+        console.log('email', email)
         e.preventDefault();
+
         dispatch(addNewHumanResource({ email, name: '' }) as unknown as any)
         dispatch(fetchAllHumanResources({ limit: '0', offset: '0', search: '', order: 'DESC' }) as any)
-        setEmail('')
+
+
     }
 
     const handelCopyClick = () => {
@@ -29,12 +32,12 @@ const Crm = () => {
 
     useEffect(() => {
         dispatch(fetchAllHumanResources({ limit: '0', offset: '0', search: '', order: 'DESC' }) as any)
-    }, [dispatch])
+    }, [])
 
-    useEffect(() => { 
-        if(isVisble){
+    useEffect(() => {
+        if (isVisble) {
             setTimeout(() => {
-               dispatch(hideAlert(false))
+                dispatch(hideAlert(false))
             }, 2000);
         }
     }, [isVisble])
@@ -48,7 +51,7 @@ const Crm = () => {
                     {
                         isVisble &&
 
-                        <Alert severity="error">{message}! <Button>Close </Button></Alert>
+                        <Alert severity={alertType as unknown as AlertColor} >{message}!</Alert>
                     }
                     <Grid container direction={'column'} gap={2}>
                         <Grid item container direction={'column'}>
@@ -66,9 +69,11 @@ const Crm = () => {
                     </Grid>
                 </Grid>
                 <Grid item lg={7} maxHeight={'95%'} overflow={'scroll'}>
-                    <TableContainer component={Paper}>
-                        <TableCompont></TableCompont>
-                    </TableContainer>
+                    <Paper>
+                        <TableContainer  >
+                            <TableCompont></TableCompont>
+                        </TableContainer>
+                    </Paper>
                 </Grid>
             </Grid>
         </>

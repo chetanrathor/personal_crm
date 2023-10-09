@@ -3,9 +3,13 @@ import { AddHumanResource, AddNewEmail, CreateNewHumanResourceResponse, CrmSlice
 import { addHumanResource, addNewEmail, getAllHumanResources, getHumanResource } from "../api"
 import { addNewHumanResource, fetchAllHumanResources } from "./crm-slice"
 
+type AlertColor = 'success' | 'info' | 'warning' | 'error';
+
+
 export const initialState = {
     isVisble: false,
-    message: ''
+    message: '',
+    alertType: 'success'
 }
 
 // export const addNewHumanResource = createAsyncThunk('crm/addNewHumanResource', async (data: AddHumanResource, { rejectWithValue }) => {
@@ -70,11 +74,11 @@ export const crmSlice = createSlice({
         // })
         builder.addCase(addNewHumanResource.fulfilled, (state, { payload }) => {
             console.log('payload', payload)
-            return { ...state, isVisble: true, message: payload.message }
+            return { ...state, isVisble: true, alertType: 'success', message: `${payload.message}. ${payload.response.email}` }
         })
         builder.addCase(addNewHumanResource.rejected, (state, action: any) => {
             console.log('payload', action.payload.message)
-            return { ...state, isVisble: true, message: action.payload.message }
+            return { ...state, isVisble: true, alertType: 'error', message: action.payload?.message }
         })
     }
 })
