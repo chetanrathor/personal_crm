@@ -75,6 +75,9 @@ export const loaderSlice = createSlice({
         builder.addCase(fetchAllHumanResources.rejected, (state, { payload }) => {
             return { ...state, isVisble: true }
         })
+        builder.addCase(fetchAllHumanResources.rejected, (state, { payload }) => {
+            return { ...state, isVisble: false }
+        })
 
         builder.addCase(addNewHumanResource.fulfilled, (state, { payload }) => {
             console.log('payload', payload)
