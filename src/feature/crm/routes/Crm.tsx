@@ -19,7 +19,7 @@ const Crm = () => {
 
         dispatch(addNewHumanResource({ email, name: '' }) as unknown as any)
         dispatch(fetchAllHumanResources({ limit: '0', offset: '0', search: '', order: 'DESC' }) as any)
-
+        setEmail('')
 
     }
 
