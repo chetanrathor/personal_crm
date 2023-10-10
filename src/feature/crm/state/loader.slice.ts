@@ -78,7 +78,7 @@ export const loaderSlice = createSlice({
 
         builder.addCase(addNewHumanResource.fulfilled, (state, { payload }) => {
             console.log('payload', payload)
-            return { ...state, isVisble: true, alertType: 'success', message: `${payload.message}. ${payload.response.email}` }
+            return { ...state, isVisble: false, alertType: 'success', message: `${payload.message}. ${payload.response.email}` }
         })
         builder.addCase(addNewHumanResource.rejected, (state, action: any) => {
             console.log('payload', action.payload.message)
