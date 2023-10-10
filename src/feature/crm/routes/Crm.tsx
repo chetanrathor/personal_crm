@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addNewHumanResource, fetchAllHumanResources } from '../state/crm-slice';
 import { RootState } from '../../../store/store';
 import { hideAlert } from '../state/alert-slice';
+import Loader from '../../components/Loader';
 
 const Crm = () => {
     const [email, setEmail] = useState('')
@@ -43,39 +44,46 @@ const Crm = () => {
     }, [isVisble])
 
     const [showAlert, setShowAlert] = useState(false)
+    const isVisbleLoader = useSelector((root: RootState) => root.loaderReducer.isVisble)
     return (
         <>
+            {
+                isVisbleLoader ? <Loader /> :
 
-            <Grid container height={'100vh'} padding={2} gap={1} justifyContent={'space-around'}>
-                <Grid item lg={4}>
-                    {
-                        isVisble &&
+                    <Grid container height={'100vh'} padding={2} gap={1} justifyContent={'space-around'}>
+                        <Grid item lg={4}>
+                            {
+                                isVisble &&
 
-                        <Alert severity={alertType as unknown as AlertColor} >{message}!</Alert>
-                    }
-                    <Grid container direction={'column'} gap={2}>
-                        <Grid item container direction={'column'}>
-                            <FormLabel>Email</FormLabel>
-                            <TextField type='email' value={email} onChange={(e) => { setEmail(e.target.value) }}></TextField>
-                        </Grid>
+                                <Alert severity={alertType as unknown as AlertColor} >{message}!</Alert>
+                            }
+                            <Grid container direction={'column'} gap={2}>
+                                <Grid item container direction={'column'}>
+                                    <FormLabel>Email</FormLabel>
+                                    <TextField type='email' value={email} onChange={(e) => { setEmail(e.target.value) }}></TextField>
+                                </Grid>
 
-                        <Grid item container gap={2} justifyContent={'space-between'}>
-                            <Button variant='contained' onClick={(e) => { handelAddHRClick(e) }}>Add An HR</Button>
-                            <Grid columnGap={2} >
-                                <Button variant='contained' sx={{ marginRight: 1 }} onClick={handelPasteClick} color='warning'>Paste</Button>
-                                <Button variant='contained' onClick={handelCopyClick}>Copy</Button>
+                                <Grid item container gap={2} justifyContent={'space-between'}>
+                                    <Button variant='contained' onClick={(e) => { handelAddHRClick(e) }}>Add An HR</Button>
+                                    <Grid columnGap={2} >
+                                        <Button variant='contained' sx={{ marginRight: 1 }} onClick={handelPasteClick} color='warning'>Paste</Button>
+                                        <Button variant='contained' onClick={handelCopyClick}>Copy</Button>
+                                    </Grid>
+                                </Grid>
+                            </Grid>
+                            <Grid my={2}>
+                                Total {humanResources.length}
                             </Grid>
                         </Grid>
+                        <Grid item lg={7} maxHeight={'95%'} overflow={'scroll'}>
+                            <Paper>
+                                <TableContainer  >
+                                    <TableCompont></TableCompont>
+                                </TableContainer>
+                            </Paper>
+                        </Grid>
                     </Grid>
-                </Grid>
-                <Grid item lg={7} maxHeight={'95%'} overflow={'scroll'}>
-                    <Paper>
-                        <TableContainer  >
-                            <TableCompont></TableCompont>
-                        </TableContainer>
-                    </Paper>
-                </Grid>
-            </Grid>
+            }
         </>
     )
 }

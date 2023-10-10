@@ -9,18 +9,17 @@ import { useSelector } from 'react-redux'
 import { RootState } from '../../../store/store'
 
 const AppRoutes = () => {
-    const { isVisble } = useSelector((root: RootState) => root.loaderReducer)
     return (
         <>
-            {
-                isVisble === false ? <>
-                    <ModalComponent></ModalComponent>
-                    <Crm></Crm >
-                </> : <Loader></Loader>
 
-            }
-          
+
+            <ModalComponent></ModalComponent>
+            <Crm></Crm >
         </>
+
+
+
+
         // <Routes>
         //     <Route path='' element={<CrmRoutes></CrmRoutes>}></Route>
         // </Routes >

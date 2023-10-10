@@ -26,6 +26,7 @@ const TableCompont = () => {
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
             <TableHead sx={{ backgroundColor: 'GrayText' }}>
                 <TableRow>
+                    <TableCell>Index</TableCell>
                     <TableCell>Name</TableCell>
                     <TableCell >Email</TableCell>
                     <TableCell >Is Email Sent Ever ? </TableCell>
@@ -34,11 +35,12 @@ const TableCompont = () => {
                 </TableRow>
             </TableHead>
             <TableBody sx={{ maxHeight: '80%' }}>
-                {rows.map((row) => (
+                {rows.map((row,i) => (
                     <TableRow
                         key={row.name}
                         sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                     >
+                        <TableCell> {i+1}</TableCell>
                         <TableCell component="th" scope="row">
                             {row.name}
                         </TableCell>
