@@ -12,21 +12,14 @@ const AppRoutes = () => {
     const { isVisble } = useSelector((root: RootState) => root.loaderReducer)
     return (
         <>
-            <>{
-                !isVisble &&
-                <>
+            {
+                isVisble === false ? <>
                     <ModalComponent></ModalComponent>
                     <Crm></Crm >
-                </>
+                </> : <Loader></Loader>
+
             }
-            </>
-            <>
-                {
-                    isVisble &&
-                        
-                    <Loader></Loader>
-                }
-            </>
+          
         </>
         // <Routes>
         //     <Route path='' element={<CrmRoutes></CrmRoutes>}></Route>
