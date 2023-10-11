@@ -5,8 +5,8 @@ export type AddHumanResource = {
 }
 
 export type GetAllHumanResouces = {
-    limit: string,
-    offset: string,
+    limit: number,
+    offset: number,
     search: string,
     order: 'ASC' | 'DESC'
 }
