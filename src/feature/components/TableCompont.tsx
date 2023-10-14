@@ -8,7 +8,10 @@ import { setIsNewEmail, showModal } from '../crm/state/modal-slice';
 import { RootState } from '../../store/store';
 const TableCompont = () => {
 
-    const rows = useSelector((state: RootState) => state.crmReducer.humanResources)
+    const state = useSelector((state: RootState) => state)
+    const {crmReducer,pagination} = state
+    const {humanResources} = crmReducer
+    const {offset} = pagination
     const dispatch = useDispatch()
     const handelSendEmailClick = (item: HumanResource) => {
         localStorage.setItem('humanResource', JSON.stringify(item))
@@ -35,12 +38,12 @@ const TableCompont = () => {
                 </TableRow>
             </TableHead>
             <TableBody sx={{ maxHeight: '80%' }}>
-                {rows.map((row,i) => (
+                {humanResources.map((row,i) => (
                     <TableRow
                         key={row.name}
                         sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                     >
-                        <TableCell> {i+1}</TableCell>
+                        <TableCell> {offset+(i+1)}</TableCell>
                         <TableCell component="th" scope="row">
                             {row.name}
                         </TableCell>

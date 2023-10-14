@@ -54,7 +54,8 @@ export const initialState = {
     totalPages: 0,
     limit: 10,
     offset: 0,
-    total: 0
+    total: 0,
+    count:0
 
 }
 
@@ -84,6 +85,7 @@ export const paginationSlice = createSlice({
                 ...state,
                 currentPage: offset >= count ? -1 : offset / limit + 1,
                 totalPages: Math.ceil(count / limit),
+                count
 
 
             }

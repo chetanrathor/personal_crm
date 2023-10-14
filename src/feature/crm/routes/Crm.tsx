@@ -8,26 +8,18 @@ import { AppDispatch, RootState } from '../../../store/store';
 import { hideAlert } from '../state/alert-slice';
 import Loader from '../../components/Loader';
 import { setLimit, setOffset } from '../state/pagination-slice';
+import { useFormik } from 'formik';
+import * as yup from 'yup';
 
 const Crm = () => {
     const [email, setEmail] = useState('')
+    const [searchEmail, setSearchEmail] = useState('')
     const { alertReducer, crmReducer, pagination } = useSelector((state: RootState) => state)
 
     const { isVisble, message, alertType } = alertReducer
     const { humanResources } = crmReducer
-    const { currentPage, totalPages, limit,offset } = pagination
+    const { currentPage, totalPages, limit, offset, count } = pagination
     const dispatch = useDispatch<AppDispatch>()
-    const handelAddHRClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-        console.log('email', email)
-        e.preventDefault();
-
-        dispatch(addNewHumanResource({ email, name: '' })).then(() => {
-
-            dispatch(fetchAllHumanResources({ limit: 0, offset: 0, search: '', order: 'DESC' }))
-            setEmail('')
-        })
-
-    }
 
     const handelCopyClick = () => {
         copy(email)
@@ -36,12 +28,14 @@ const Crm = () => {
         navigator.clipboard.readText().then((data) => setEmail(data))
     }
 
+
     useEffect(() => {
-        dispatch(fetchAllHumanResources({ limit, offset: 0, search: '', order: 'DESC' }))
-    }, [])
+        dispatch(fetchAllHumanResources({ limit, offset, search: searchEmail, order: 'DESC' }))
+    }, [limit, offset])
+
     useEffect(() => {
-        dispatch(fetchAllHumanResources({ limit, offset, search: '', order: 'DESC' }))
-    }, [limit,offset])
+        dispatch(fetchAllHumanResources({ limit: 10, offset: 0, search: searchEmail, order: 'DESC' }))
+    }, [searchEmail])
 
     useEffect(() => {
         if (isVisble) {
@@ -51,11 +45,32 @@ const Crm = () => {
         }
     }, [isVisble])
 
-    
+
 
     const [showAlert, setShowAlert] = useState(false)
     // 7999626474
     const isVisbleLoader = useSelector((root: RootState) => root.loaderReducer.isVisble)
+    const formik = useFormik({
+        validationSchema: yup.object({
+            email: yup.string().email('Must be valid email.').required('Email id is required.')
+        }),
+        initialValues: {
+            email: ''
+        },
+        onSubmit: (e) => {
+            handelAddHRClick()
+        }
+    })
+    const handelAddHRClick = () => {
+
+
+        dispatch(addNewHumanResource({ email: formik.values.email, name: '' })).then(() => {
+
+            dispatch(fetchAllHumanResources({ limit: 0, offset: 0, search: '', order: 'DESC' }))
+            setEmail('')
+        })
+
+    }
     return (
         <>
             {
@@ -68,23 +83,32 @@ const Crm = () => {
                                 <Alert severity={alertType as unknown as AlertColor} >{message}!</Alert>
                             }
                             <Grid container direction={'column'} gap={2}>
-                                <Grid item container direction={'column'}>
-                                    <FormLabel>Email</FormLabel>
-                                    <TextField type='email' value={email} onChange={(e) => { setEmail(e.target.value) }}></TextField>
-                                </Grid>
+                                <form onSubmit={(e) => { e.preventDefault(); formik.handleSubmit() }}>
 
-                                <Grid item container gap={2} justifyContent={'space-between'}>
-                                    <Button variant='contained' onClick={(e) => { handelAddHRClick(e) }}>Add An HR</Button>
-                                    <Grid columnGap={2} >
-                                        <Button variant='contained' sx={{ marginRight: 1 }} onClick={handelPasteClick} color='warning'>Paste</Button>
-                                        <Button variant='contained' onClick={handelCopyClick}>Copy</Button>
+                                    <Grid item container direction={'column'}>
+                                        <FormLabel>Email</FormLabel>
+                                        <TextField type='email' name='email' value={formik.values.email} onChange={formik.handleChange}></TextField>
+                                        {
+                                            (formik.errors.email) ?
+                                                <p style={{ color: 'red' }}>{formik.errors.email}</p>
+                                                : null
+                                        }
                                     </Grid>
-                                </Grid>
+
+                                    <Grid item container mt={2} gap={2} justifyContent={'space-between'}>
+                                        <Button type='submit' variant='contained'>Add An HR</Button>
+                                        <Grid columnGap={2} >
+                                            <Button variant='contained' sx={{ marginRight: 1 }} onClick={handelPasteClick} color='warning'>Paste</Button>
+                                            <Button variant='contained' onClick={handelCopyClick}>Copy</Button>
+                                        </Grid>
+                                    </Grid>
+                                </form>
+
                             </Grid>
                             <Grid container direction={'column'}>
 
                                 <Grid my={2} item>
-                                    Total {humanResources.length}
+                                    Total {count}
                                 </Grid>
                                 <Grid my={2} item>
                                     <Select
@@ -109,6 +133,24 @@ const Crm = () => {
                             </Grid>
                         </Grid>
                         <Grid item lg={7} maxHeight={'95%'} overflow={'scrollX'}>
+                            <Grid container alignItems={'center'} justifyContent={'space-between'} mb={2}>
+                                <Grid item container direction={'column'} xs={6}>
+                                    <FormLabel>Search</FormLabel>
+                                    <TextField autoFocus value={searchEmail} onChange={(e) => {
+                                        setSearchEmail(e.target.value)
+                                    }}></TextField>
+                                </Grid>
+                                <Grid item xs={5} container alignItems={'center'} columnGap={2}>
+                                    <Button variant='contained' onClick={() => {
+                                        dispatch(fetchAllHumanResources({ limit: 10, offset: 0, search: searchEmail, order: 'DESC' }))
+
+                                    }}>Search</Button>
+
+                                    <Button variant='contained' color='warning' onClick={() => {
+                                        setSearchEmail('')
+                                    }}>Reset</Button>
+                                </Grid>
+                            </Grid>
                             <Paper>
                                 <TableContainer  >
                                     <TableCompont></TableCompont>
