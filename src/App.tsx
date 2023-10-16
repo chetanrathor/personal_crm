@@ -4,28 +4,34 @@ import './App.css';
 import AppRoutes from './feature/crm/routes';
 import { Provider } from 'react-redux';
 import { store } from './store/store';
-import { RouterProvider } from 'react-router-dom';
+import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+import Crm from './feature/crm/routes/Crm';
+import Notes from './feature/crm/routes/Notes';
 
 function App() {
-  const routes = [
+  const routes = createBrowserRouter([
     {
-      path: '',
-      element: (<App></App>),
+      path: '/',
+      element: (<AppRoutes></AppRoutes>),
       children:[
         {
-          
+          path:'/crm',
+          element:(<Crm></Crm>)
+        },
+        {
+          path:'/notes',
+          element:(<Notes></Notes>)
         }
       ]
+
     }
-
-  ]
+  ])
   return (
-    // <RouterProvider router={ }>
 
-      <Provider store={store}>
-        <AppRoutes></AppRoutes>
-      </Provider>
-    // </RouterProvider>
+    <Provider store={store}>
+      <RouterProvider router={routes}></RouterProvider>
+    </Provider>
+
   )
 }
 

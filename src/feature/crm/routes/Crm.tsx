@@ -10,6 +10,7 @@ import Loader from '../../components/Loader';
 import { setLimit, setOffset } from '../state/pagination-slice';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
+import { useNavigate } from 'react-router';
 
 const Crm = () => {
     const [email, setEmail] = useState('')
@@ -71,6 +72,8 @@ const Crm = () => {
         })
 
     }
+
+    const navigate = useNavigate()
     return (
         <>
             {
@@ -96,10 +99,13 @@ const Crm = () => {
                                     </Grid>
 
                                     <Grid item container mt={2} gap={2} justifyContent={'space-between'}>
+                                        <Grid columnGap={2}  container>
                                         <Button type='submit' variant='contained'>Add An HR</Button>
-                                        <Grid columnGap={2} >
-                                            <Button variant='contained' sx={{ marginRight: 1 }} onClick={handelPasteClick} color='warning'>Paste</Button>
+                                            <Button variant='contained'  onClick={handelPasteClick} color='warning'>Paste</Button>
                                             <Button variant='contained' onClick={handelCopyClick}>Copy</Button>
+                                            <Button variant='contained' onClick={() => {
+                                                navigate('/notes')
+                                            }}>Notes</Button>
                                         </Grid>
                                     </Grid>
                                 </form>
