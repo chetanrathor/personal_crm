@@ -79,7 +79,7 @@ const Crm = () => {
             {
                 isVisbleLoader ? <Loader /> :
 
-                    <Grid container height={'100vh'} padding={2} gap={1} justifyContent={'space-around'}>
+                    <Grid container height={'100vh'} padding={2} gap={1} justifyContent={'space-around'} overflow={'scroll'}>
                         <Grid item lg={4}>
                             {
                                 isVisble &&
