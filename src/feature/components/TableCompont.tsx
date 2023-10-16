@@ -37,7 +37,7 @@ const TableCompont = () => {
 
                 </TableRow>
             </TableHead>
-            <TableBody sx={{ maxHeight: '80%' }}>
+            <TableBody sx={{ height: '300px' }}>
                 {humanResources.map((row,i) => (
                     <TableRow
                         key={row.name}

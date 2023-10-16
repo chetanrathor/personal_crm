@@ -1,6 +1,6 @@
 export default  {
     "to":"",
-    "subject":"Application For Full Stack Developer.",
+    "subject":"Full Stack Developer : Profile",
     "body":`
 Hello ,
 

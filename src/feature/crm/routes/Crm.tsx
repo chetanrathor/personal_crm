@@ -99,7 +99,7 @@ const Crm = () => {
                                     </Grid>
 
                                     <Grid item container mt={2} gap={2} justifyContent={'space-between'}>
-                                        <Grid columnGap={2}  container>
+                                        <Grid columnGap={2} rowGap={2}  container>
                                         <Button type='submit' variant='contained'>Add An HR</Button>
                                             <Button variant='contained'  onClick={handelPasteClick} color='warning'>Paste</Button>
                                             <Button variant='contained' onClick={handelCopyClick}>Copy</Button>
@@ -138,7 +138,12 @@ const Crm = () => {
                                 </Grid>
                             </Grid>
                         </Grid>
-                        <Grid item lg={7} maxHeight={'95%'} overflow={'scrollX'}>
+                        <Pagination count={totalPages} page={currentPage} onChange={(e, page) => {
+                                console.log('page', page)
+                                const offset = (page - 1) * limit
+                                dispatch(setOffset(offset))
+                            }} color="secondary" />
+                        <Grid item lg={7} maxHeight={'95%'} overflow={'scroll'}>
                             <Grid container alignItems={'center'} justifyContent={'space-between'} mb={2}>
                                 <Grid item container direction={'column'} xs={6}>
                                     <FormLabel>Search</FormLabel>
@@ -146,7 +151,7 @@ const Crm = () => {
                                         setSearchEmail(e.target.value)
                                     }}></TextField>
                                 </Grid>
-                                <Grid item xs={5} container alignItems={'center'} columnGap={2}>
+                                <Grid item xs={5} container alignItems={'center'} columnGap={2} rowGap={2}>
                                     <Button variant='contained' onClick={() => {
                                         dispatch(fetchAllHumanResources({ limit: 10, offset: 0, search: searchEmail, order: 'DESC' }))
 
@@ -162,11 +167,7 @@ const Crm = () => {
                                     <TableCompont></TableCompont>
                                 </TableContainer>
                             </Paper>
-                            <Pagination count={totalPages} page={currentPage} onChange={(e, page) => {
-                                console.log('page', page)
-                                const offset = (page - 1) * limit
-                                dispatch(setOffset(offset))
-                            }} color="secondary" />
+                           
                         </Grid>
                     </Grid>
             }
