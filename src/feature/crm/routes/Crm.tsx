@@ -147,7 +147,7 @@ const Crm = () => {
                             <Grid container alignItems={'center'} justifyContent={'space-between'} mb={2}>
                                 <Grid item container direction={'column'} xs={6}>
                                     <FormLabel>Search</FormLabel>
-                                    <TextField autoFocus value={searchEmail} onChange={(e) => {
+                                    <TextField  value={searchEmail} onChange={(e) => {
                                         setSearchEmail(e.target.value)
                                     }}></TextField>
                                 </Grid>
