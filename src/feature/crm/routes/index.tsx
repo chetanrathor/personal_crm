@@ -17,6 +17,7 @@ const AppRoutes = () => {
     return (
         <>
             <Outlet></Outlet>
+            <ModalComponent></ModalComponent>
 
         </>
     )

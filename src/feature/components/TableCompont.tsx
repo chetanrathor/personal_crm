@@ -14,6 +14,7 @@ const TableCompont = () => {
     const {offset} = pagination
     const dispatch = useDispatch()
     const handelSendEmailClick = (item: HumanResource) => {
+        console.log('item', item)
         localStorage.setItem('humanResource', JSON.stringify(item))
         dispatch(showModal())
         dispatch(setIsNewEmail(true))

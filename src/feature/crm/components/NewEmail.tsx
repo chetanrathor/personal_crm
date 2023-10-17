@@ -70,7 +70,7 @@ const NewEmail = () => {
             </Grid>
             <Grid item >
                 <InputLabel>Subject</InputLabel>
-                <TextField value={template.subject} onChange={(e) => { setTemplate((state) => { return { ...state, subject: template.subject } }) }} fullWidth></TextField>
+                <TextField value={template.subject} onChange={(e) => { setTemplate((state) => { return { ...state, subject: e.target.value } }) }} fullWidth></TextField>
             </Grid>
             <Grid item>
                 <InputLabel>To:</InputLabel>
