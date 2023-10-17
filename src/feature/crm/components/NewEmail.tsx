@@ -9,7 +9,10 @@ import { RootState } from '../../../store/store'
 import { useNavigate } from 'react-router-dom'
 import { createNewEmail, fetchAllHumanResources } from '../state/crm-slice'
 const NewEmail = () => {
-    const { isNewEmail } = useSelector((state: RootState) => state.modalReducer)
+    const { modalReducer, pagination } = useSelector((state: RootState) => state)
+    const { isNewEmail } = modalReducer
+    const { limit, offset } = pagination
+
     const dispatch = useDispatch()
     const [template, setTemplate] = useState(() => {
         const humanResource: HumanResource = JSON.parse(localStorage.getItem('humanResource') ?? "")
@@ -51,7 +54,7 @@ const NewEmail = () => {
         const humanResource: HumanResource = JSON.parse(localStorage.getItem('humanResource') ?? "")
         dispatch(hideModal())
         dispatch(createNewEmail({ body: template.body, subject: template.subject ?? '', humanResource: humanResource.id }) as any)
-        const result = await dispatch(fetchAllHumanResources({ limit: 0, offset: 0, search: '', order: 'DESC' }) as any).then((r: any) => {
+        const result = await dispatch(fetchAllHumanResources({ limit, offset, search: '', order: 'DESC' }) as any).then((r: any) => {
             if (r.meta.requestStatus === "fulfilled") {
                 window.location.href = `mailto:${template.to}?&subject=${template.subject}&body=${encodeURIComponent(template.body)}`
 
