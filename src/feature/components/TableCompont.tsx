@@ -31,10 +31,10 @@ const TableCompont = () => {
             <TableHead sx={{ backgroundColor: 'GrayText' }}>
                 <TableRow>
                     <TableCell>Index</TableCell>
+                    <TableCell >Send E-Mail </TableCell>
                     <TableCell>Name</TableCell>
                     <TableCell >Email</TableCell>
                     <TableCell >Is Email Sent Ever ? </TableCell>
-                    <TableCell >Send E-Mail </TableCell>
 
                 </TableRow>
             </TableHead>
@@ -45,6 +45,9 @@ const TableCompont = () => {
                         sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                     >
                         <TableCell> {offset+(i+1)}</TableCell>
+                         <TableCell>
+                            {row.personalizeEmails.length === 0 ? <Button variant='contained' color='primary' onClick={() => { handelSendEmailClick(row) }} >Send Email</Button> : <Button variant='contained' color='warning' onClick={() => { handelFollowUpClick(row) }}>Follow Up</Button>}
+                        </TableCell>
                         <TableCell component="th" scope="row">
                             {row.name}
                         </TableCell>
@@ -56,9 +59,7 @@ const TableCompont = () => {
                                 row.personalizeEmails.length ? <DoneAllIcon color='success'></DoneAllIcon> : <CloseIcon color='error'></CloseIcon>
                             }
                         </TableCell>
-                        <TableCell>
-                            {row.personalizeEmails.length === 0 ? <Button variant='contained' color='primary' onClick={() => { handelSendEmailClick(row) }} >Send Email</Button> : <Button variant='contained' color='warning' onClick={() => { handelFollowUpClick(row) }}>Follow Up</Button>}
-                        </TableCell>
+                       
 
                     </TableRow>
                 ))}

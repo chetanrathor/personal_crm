@@ -11,7 +11,7 @@ import { setLimit, setOffset } from '../state/pagination-slice';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { useNavigate } from 'react-router';
-
+import SyncIcon from '@mui/icons-material/Sync';
 const Crm = () => {
     const [email, setEmail] = useState('')
     const [searchEmail, setSearchEmail] = useState('')
@@ -99,9 +99,9 @@ const Crm = () => {
                                     </Grid>
 
                                     <Grid item container mt={2} gap={2} justifyContent={'space-between'}>
-                                        <Grid columnGap={2} rowGap={2}  container>
-                                        <Button type='submit' variant='contained'>Add An HR</Button>
-                                            <Button variant='contained'  onClick={handelPasteClick} color='warning'>Paste</Button>
+                                        <Grid columnGap={2} rowGap={2} container>
+                                            <Button type='submit' variant='contained'>Add An HR</Button>
+                                            <Button variant='contained' onClick={handelPasteClick} color='warning'>Paste</Button>
                                             <Button variant='contained' onClick={handelCopyClick}>Copy</Button>
                                             <Button variant='contained' onClick={() => {
                                                 navigate('/notes')
@@ -111,12 +111,12 @@ const Crm = () => {
                                 </form>
 
                             </Grid>
-                            <Grid container direction={'column'}>
+                            <Grid container direction={'row'} alignItems={'center'} justifyContent={'space-between'}>
 
-                                <Grid my={2} item>
+                                <Grid my={2} xs={3} item>
                                     Total {count}
                                 </Grid>
-                                <Grid my={2} item>
+                                <Grid my={2} xs={3} item>
                                     <Select
                                         labelId="demo-simple-select-label"
                                         id="demo-simple-select"
@@ -135,19 +135,26 @@ const Crm = () => {
                                         <MenuItem value={50}>Fifty</MenuItem>
 
                                     </Select>
+
+                                </Grid>
+                                <Grid item xs={3}>
+                                    <SyncIcon onClick={() => {
+                                        dispatch(fetchAllHumanResources({ limit, offset, search: searchEmail, order: 'DESC' }))
+
+                                    }}></SyncIcon>
                                 </Grid>
                             </Grid>
                         </Grid>
                         <Pagination count={totalPages} page={currentPage} onChange={(e, page) => {
-                                console.log('page', page)
-                                const offset = (page - 1) * limit
-                                dispatch(setOffset(offset))
-                            }} color="secondary" />
+                            console.log('page', page)
+                            const offset = (page - 1) * limit
+                            dispatch(setOffset(offset))
+                        }} color="secondary" />
                         <Grid item lg={7} maxHeight={'95%'} overflow={'scroll'}>
                             <Grid container alignItems={'center'} justifyContent={'space-between'} mb={2}>
                                 <Grid item container direction={'column'} xs={6}>
                                     <FormLabel>Search</FormLabel>
-                                    <TextField  value={searchEmail} onChange={(e) => {
+                                    <TextField value={searchEmail} onChange={(e) => {
                                         setSearchEmail(e.target.value)
                                     }}></TextField>
                                 </Grid>
@@ -167,7 +174,7 @@ const Crm = () => {
                                     <TableCompont></TableCompont>
                                 </TableContainer>
                             </Paper>
-                           
+
                         </Grid>
                     </Grid>
             }
