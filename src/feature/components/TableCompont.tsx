@@ -32,8 +32,8 @@ const TableCompont = () => {
                 <TableRow>
                     <TableCell>Index</TableCell>
                     <TableCell >Send E-Mail </TableCell>
-                    <TableCell>Name</TableCell>
-                    <TableCell >Email</TableCell>
+                    <TableCell>Email</TableCell>
+                    <TableCell >Name</TableCell>
                     <TableCell >Is Email Sent Ever ? </TableCell>
 
                 </TableRow>
@@ -46,13 +46,13 @@ const TableCompont = () => {
                     >
                         <TableCell> {offset+(i+1)}</TableCell>
                          <TableCell>
-                            {row.personalizeEmails.length === 0 ? <Button variant='contained' color='primary' onClick={() => { handelSendEmailClick(row) }} >Send Email</Button> : <Button variant='contained' color='warning' onClick={() => { handelFollowUpClick(row) }}>Follow Up</Button>}
-                        </TableCell>
-                        <TableCell component="th" scope="row">
-                            {row.name}
+                           <Button variant='contained' color='primary' onClick={() => { handelSendEmailClick(row) }} >Send Email</Button> : <Button variant='contained' color='warning' onClick={() => { handelFollowUpClick(row) }}>Follow Up</Button>
                         </TableCell>
                         <TableCell component="th" scope="row">
                             {row.email}
+                        </TableCell>
+                        <TableCell component="th" scope="row">
+                            {row.name}
                         </TableCell>
                         <TableCell component="th" scope="row">
                             {
