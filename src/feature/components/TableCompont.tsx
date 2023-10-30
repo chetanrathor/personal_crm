@@ -46,7 +46,7 @@ const TableCompont = () => {
                     >
                         <TableCell> {offset+(i+1)}</TableCell>
                          <TableCell>
-                           <Button variant='contained' color='primary' onClick={() => { handelSendEmailClick(row) }} >Send Email</Button> : <Button variant='contained' color='warning' onClick={() => { handelFollowUpClick(row) }}>Follow Up</Button>
+                           <Button variant='contained' color='primary' onClick={() => { handelSendEmailClick(row) }} >Send Email</Button>  <Button variant='contained' color='warning' onClick={() => { handelFollowUpClick(row) }}>Follow Up</Button>
                         </TableCell>
                         <TableCell component="th" scope="row">
                             {row.email}
