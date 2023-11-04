@@ -36,7 +36,7 @@ const TableCompont = () => {
                     <TableCell >Name</TableCell>
                     <TableCell >Is Email Sent Ever ? </TableCell>
 
-                </TableRow>
+                </TableRow> 
             </TableHead>
             <TableBody sx={{ height: '300px' }}>
                 {humanResources.map((row,i) => (
@@ -44,7 +44,7 @@ const TableCompont = () => {
                         key={row.name}
                         sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                     >
-                        <TableCell> {offset+(i+1)}</TableCell>
+                        <TableCell> {offset+(i+1)}</TableCell> 
                          <TableCell>
                            <Button variant='contained' color='primary' onClick={() => { handelSendEmailClick(row) }} >Send Email</Button>  <Button variant='contained' color='warning' onClick={() => { handelFollowUpClick(row) }}>Follow Up</Button>
                         </TableCell>

@@ -68,7 +68,7 @@ const Crm = () => {
         dispatch(addNewHumanResource({ email: formik.values.email, name: '' })).then(() => {
 
             dispatch(fetchAllHumanResources({ limit: 0, offset: 0, search: '', order: 'DESC' }))
-            setEmail('')
+            formik.setValues({email:''})
         })
 
     }
@@ -86,7 +86,7 @@ const Crm = () => {
                                 <Alert severity={alertType as unknown as AlertColor} >{message}!</Alert>
                             }
                             <Grid container direction={'column'} gap={2}>
-                                {/* <form onSubmit={(e) => { e.preventDefault(); formik.handleSubmit() }}> */}
+                                <form onSubmit={(e) => { e.preventDefault(); formik.handleSubmit() }}>
 
                                 <Grid item container direction={'column'}>
                                     <FormLabel>Email</FormLabel>
@@ -108,7 +108,7 @@ const Crm = () => {
                                         }}>Notes</Button>
                                     </Grid>
                                 </Grid>
-                                {/* </form> */}
+                                </form>
 
                             </Grid>
                             <Grid container direction={'row'} alignItems={'center'} justifyContent={'space-between'}>
