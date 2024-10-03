@@ -26,17 +26,19 @@ const Crm = () => {
         copy(email)
     }
     const handelPasteClick = () => {
-        navigator.clipboard.readText().then((data) => {formik.setValues({ email: data })})
+        navigator.clipboard.readText().then((data) => { formik.setValues({ email: data }) })
     }
 
 
     useEffect(() => {
-        dispatch(fetchAllHumanResources({ limit, offset, search: searchEmail, order: 'DESC' }))
-    }, [limit, offset])
+        const timer = setTimeout(() => {
+            dispatch(fetchAllHumanResources({ limit: 10, offset: 0, search: searchEmail, order: 'DESC' }))
+        }, 750)
 
-    useEffect(() => {
-        dispatch(fetchAllHumanResources({ limit: 10, offset: 0, search: searchEmail, order: 'DESC' }))
-    }, [searchEmail])
+        return () => {
+            clearTimeout(timer)
+        }
+    }, [limit, offset, searchEmail])
 
     useEffect(() => {
         if (isVisble) {
@@ -68,7 +70,7 @@ const Crm = () => {
         dispatch(addNewHumanResource({ email: formik.values.email, name: '' })).then(() => {
 
             dispatch(fetchAllHumanResources({ limit: 0, offset: 0, search: '', order: 'DESC' }))
-            formik.setValues({email:''})
+            formik.setValues({ email: '' })
         })
 
     }
@@ -88,26 +90,26 @@ const Crm = () => {
                             <Grid container direction={'column'} gap={2}>
                                 <form onSubmit={(e) => { e.preventDefault(); formik.handleSubmit() }}>
 
-                                <Grid item container direction={'column'}>
-                                    <FormLabel>Email</FormLabel>
-                                    <TextField type='email' name='email' value={formik.values.email} onChange={formik.handleChange}></TextField>
-                                    {
-                                        (formik.errors.email) ?
-                                            <p style={{ color: 'red' }}>{formik.errors.email}</p>
-                                            : null
-                                    }
-                                </Grid>
-
-                                <Grid item container mt={2} gap={2} justifyContent={'space-between'}>
-                                    <Grid columnGap={2} rowGap={2} container>
-                                        <Button type='submit' variant='contained'>Add An HR</Button>
-                                        <Button variant='contained' onClick={handelPasteClick} color='warning'>Paste</Button>
-                                        <Button variant='contained' onClick={handelCopyClick}>Copy</Button>
-                                        <Button variant='contained' onClick={() => {
-                                            navigate('/notes')
-                                        }}>Notes</Button>
+                                    <Grid item container direction={'column'}>
+                                        <FormLabel>Email</FormLabel>
+                                        <TextField type='email' name='email' value={formik.values.email} onChange={formik.handleChange}></TextField>
+                                        {
+                                            (formik.errors.email) ?
+                                                <p style={{ color: 'red' }}>{formik.errors.email}</p>
+                                                : null
+                                        }
                                     </Grid>
-                                </Grid>
+
+                                    <Grid item container mt={2} gap={2} justifyContent={'space-between'}>
+                                        <Grid columnGap={2} rowGap={2} container>
+                                            <Button type='submit' variant='contained'>Add An HR</Button>
+                                            <Button variant='contained' onClick={handelPasteClick} color='warning'>Paste</Button>
+                                            <Button variant='contained' onClick={handelCopyClick}>Copy</Button>
+                                            <Button variant='contained' onClick={() => {
+                                                navigate('/notes')
+                                            }}>Notes</Button>
+                                        </Grid>
+                                    </Grid>
                                 </form>
 
                             </Grid>
